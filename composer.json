@@ -1,0 +1,15 @@
+{
+    "require": {
+        "silex/silex": "1.0.*",
+        "guzzle/guzzle": "3.0.*",
+        "twig/twig": "1.*"
+    },
+    "autoload" : {
+        "psr-4" : {
+            "Controller\\" : "./src/Controller/",
+            "Controller\\Atlassian\\" : "./src/Atlassian/",
+            "Interfaces\\" : "./src/Interfaces/"
+        }
+    }
+
+}
