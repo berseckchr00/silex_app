@@ -8,4 +8,6 @@ namespace Interfaces;
 interface JiraInterface extends AbstractProviders
 {
     public function createIssue($data);
+
+    public function getOrganization($oauth);
 }

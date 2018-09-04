@@ -5,7 +5,7 @@
  */
 require_once __DIR__.'/../vendor/autoload.php';
 
-use Controller\Generic;
+use Controller\GenericController;
 /**
  * Creamos objeto Silex\Application
  */
@@ -22,7 +22,7 @@ $app->register(new Silex\Provider\TwigServiceProvider(), array(
 ));
 
 $app['oauth'] = $app->share(function() use($app){
-    $gen = new Generic();
+    $gen = new GenericController();
     $oauth = $gen->Auth($app['url_generator']->generate('callback', array(), true));
     return $oauth;
 });
@@ -31,7 +31,7 @@ $app['oauth'] = $app->share(function() use($app){
  * definicion de ruta quizas esto se puede agregar en un archivo routes
  * para mantener controladas todas las rutas
  */
-$app->get('/ssot/auth/', function () use ($app) {
+$app->get('/generic/auth/', function () use ($app) {
     $oauth = $app['session']->get('oauth');
 
     if (empty($oauth)) {
@@ -41,11 +41,21 @@ $app->get('/ssot/auth/', function () use ($app) {
             $oauth['oauth_token'],
             $oauth['oauth_token_secret']
         )->get('rest/api/2/priority')->send()->json();
+        
+        /**
+         * acá realizamos llamada API get servicedesk (lista de proyectos)
+         */
+        $response = $app['oauth']->getClient(
+            $oauth['oauth_token'],
+            $oauth['oauth_token_secret']
+        )->get('rest/servicedeskapi/servicedesk')->send()->json();
+
     }
 
     return $app['twig']->render('layout.twig', array(
         'oauth' => $oauth,
         'priorities' => $priorities,
+        'response' => json_encode($response)
     ));
 })->bind('home');
 
