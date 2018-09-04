@@ -7,8 +7,7 @@
  */
 
 namespace Interfaces;
-
-use Atlassian\OAuthWrapper;
+use Silex\Application;
 
 /**
  * Interface Providers
@@ -16,11 +15,13 @@ use Atlassian\OAuthWrapper;
  */
 interface AbstractProviders
 {
-    /**
-     * OAuth Method to loggin Jira
-     * @param OAuthWrapper $oauth
-     * @return mixed
-     *
-     */
-    public function Auth($callback);
+    public function index();
+
+    public function get($app);
+
+    public function post();
+
+    public function put();
+
+    public function delete();
 }
